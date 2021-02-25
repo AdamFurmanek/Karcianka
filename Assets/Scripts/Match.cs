@@ -1,69 +1,82 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Users;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 
+
+// todo w ktorym momencie pojawiaja sie userzy? Tzn gdzie oni sa przypisywani? Mozna ich tu dodac w konstruktorze?
 public class Match : MonoBehaviour
 {
-    public List<Card>[,] cards =
-    {
-        {new List<Card>(), new List<Card>(), new List<Card>(), new List<Card>()},
-        {new List<Card>(), new List<Card>(), new List<Card>(), new List<Card>()}
-    };
+    //public IEnumerable<IEnumerable<Card>> Cards { get; set; } = new List<IEnumerable<Card>>
+    //{
+    //    { new List<Card>(), new List<Card>(), new List<Card>(), new List<Card>() },
+    //    { new List<Card>(), new List<Card>(), new List<Card>(), new List<Card>() }
+    //};
 
-    public int currentPlayer;
-    public Card selectedCard = null;
+    public User CurrentPlayer { get; set; }
+    public User EnemyUser { get; set; }
+
+    //public int currentPlayer;
+
+    public Card SelectedCard { get; set; } = null;
+    //public Card selectedCard = null;
 
     public int OpposingPlayer()
     {
-        return currentPlayer == 0 ? 1 : 0;
+        return CurrentPlayer.Id == 0 ? 1 : 0;
     }
 
     public void ExecuteOnSecondCard(Card other)
     {
         Debug.Log("ok");
-        selectedCard.UseOnSomething(other);
-        selectedCard = null;
+        SelectedCard.UseOnSomething(other);
+        SelectedCard = null;
     }
 
     public void Start()
     {
-        List<string> playerCards = new List<string>();
-        List<string> enemyCards = new List<string>();
-        for(int i= 0; i < 10; i++)
-        {
-            playerCards.Add("Soldier");
-            enemyCards.Add("Soldier");
-        }
-
-        StartMatch(playerCards, enemyCards);
+        StartMatch(CurrentPlayer.Cards.ToList(), EnemyUser.Cards.ToList());
         CleanTable();
-
     }
 
-    public void StartMatch(List<string> player0Cards, List<string> player1Cards)
+    public void StartMatch(List<Card> player0Cards, List<Card> player1Cards)
     {
-        List<string>[] playersCards = { player0Cards, player1Cards };
-        for(int i = 0; i < playersCards.Length; i++)
+        //todo nie do konca wiem co tu sie dzieje wiec na razie nie ruszam
+        List<Card>[] playersCards = { player0Cards, player1Cards };
+        for (int i = 0; i < playersCards.Length; i++)
         {
             for (int j = 0; j < playersCards[i].Count; j++)
             {
-                GameObject go = (GameObject)Resources.Load("prefabs/"+ playersCards[i][j], typeof(GameObject));
+                GameObject go = (GameObject)Resources.Load("prefabs/" + playersCards[i][j], typeof(GameObject));
                 Card card = Instantiate(go, new Vector3(0, 0, 0), go.transform.rotation).GetComponent<Card>();
                 card.PrepareForBattle(this, i);
             }
         }
     }
 
+    private void SetDeaths(IEnumerable<Card> killedCards)
+    {
+        foreach(var card in killedCards)
+        {
+            card.Death();
+        }
+    }
+
     public void CheckDeaths()
     {
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = cards[i,2].Count - 1; j >= 0; j--)
-            {
-                if (cards[i, 2][j].health <= 0)
-                    cards[i, 2][j].Death();
-            }
-        }
+        //todo chodzilo o karty na stole?
+        var currentUserKilledCards = CurrentPlayer.CardsPlaces[Place.Table].Where(c => c.health <= 0);
+        var enemyUserKilledCards = EnemyUser.CardsPlaces[Place.Table].Where(c => c.health <= 0);
+
+        SetDeaths(currentUserKilledCards);
+        SetDeaths(enemyUserKilledCards);
+        //for (int i = 0; i < 2; i++)
+        //{
+        //    for (int j = cards[i, 2].Count - 1; j >= 0; j--)
+        //    {
+        //        if (cards[i, 2][j].health <= 0)
+        //            cards[i, 2][j].Death();
+        //    }
+        //}
     }
 
     public void CleanTable()
@@ -91,14 +104,20 @@ public class Match : MonoBehaviour
 
     public void OnMouseDown()
     {
-        selectedCard = null;
+        SelectedCard = null;
     }
 
     public void GiveTurn()
     {
-        currentPlayer = OpposingPlayer();
-        for (int i = 0; i < cards[2,currentPlayer].Count; i++)
-            cards[2,currentPlayer][i].OnNewTurn();
+        var newTurnCards = CurrentPlayer.CardsPlaces[Place.Table];
+        foreach(var card in newTurnCards)
+        {
+            card.OnNewTurn();
+        }
+        //currentPlayer = OpposingPlayer();
+
+        //for (int i = 0; i < cards[2, currentPlayer].Count; i++)
+        //    cards[2, currentPlayer][i].OnNewTurn();
 
         CheckDeaths(); //Sprawdź czy ktoś umarł/przegrał.
     }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SoldierCard : Card
 {
-
-    
+    public string ToString()
+    {
+        return "Soldier";
+    }
 }
