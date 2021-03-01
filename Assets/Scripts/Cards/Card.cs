@@ -10,16 +10,16 @@ public abstract class Card : MonoBehaviour
     public int uses, sleeps;
 
     public Match match;
+    public Player player;
     public int status;
-    public int player;
 
-    public void PrepareForBattle(Match match, int player)
+    public void PrepareForBattle(Match match, Player player)
     {
-        this.match = match;
         ResetStats();
+        this.match = match;
         this.player = player;
         status = 0;
-        match.cards[player, status].Add(this);
+        this.player.cards[0].Add(this);
     }
 
     public void ResetStats()
@@ -33,7 +33,7 @@ public abstract class Card : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (match.selectedCard == null)
+        if (match.SelectedCard == null)
         {
             switch (status)
             {
@@ -44,12 +44,12 @@ public abstract class Card : MonoBehaviour
                     PutOnTable();
                     break;
                 case 2:
-                    match.selectedCard = this;
+                    match.SelectedCard = this;
                     break;
             }
         }
         else
-            if (match.selectedCard != this)
+            if (match.SelectedCard != this)
                 match.ExecuteOnSecondCard(this);
 
         match.CheckDeaths();
@@ -58,16 +58,16 @@ public abstract class Card : MonoBehaviour
 
     public virtual void DrawACard()
     {
-        match.cards[player, status].Remove(this);
+        player.cards[status].Remove(this);
         status = 1;
-        match.cards[player, status].Add(this);
+        player.cards[status].Add(this);
     }
 
     public virtual void PutOnTable()
     {
-        match.cards[player, status].Remove(this);
+        player.cards[status].Remove(this);
         status = 2;
-        match.cards[player, status].Add(this);
+        player.cards[status].Add(this);
     }
 
     public virtual void UseOnSomething(Card other)
@@ -78,9 +78,9 @@ public abstract class Card : MonoBehaviour
 
     public virtual void Death()
     {
-        match.cards[player, status].Remove(this);
+        player.cards[status].Remove(this);
         status = 3;
-        match.cards[player, status].Add(this);
+        player.cards[status].Add(this);
     }
 
     public virtual void Resurrection(int status)
