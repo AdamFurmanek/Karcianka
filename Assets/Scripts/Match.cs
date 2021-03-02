@@ -32,35 +32,35 @@ public class Match : MonoBehaviour
 
     public void CheckDeaths()
     {
-        for (int i = CurrentPlayer.cards[2].Count - 1; i >= 0; i--)
-            if (CurrentPlayer.cards[2][i].health <= 0)
-                CurrentPlayer.cards[2][i].Death();
-        for (int i = OtherPlayer.cards[2].Count - 1; i >= 0; i--)
-            if (OtherPlayer.cards[2][i].health <= 0)
-                OtherPlayer.cards[2][i].Death();
+        for (int i = CurrentPlayer.cards[Place.Table].Count - 1; i >= 0; i--)
+            if (CurrentPlayer.cards[Place.Table][i].health <= 0)
+                CurrentPlayer.cards[Place.Table][i].Death();
+        for (int i = OtherPlayer.cards[Place.Table].Count - 1; i >= 0; i--)
+            if (OtherPlayer.cards[Place.Table][i].health <= 0)
+                OtherPlayer.cards[Place.Table][i].Death();
     }
 
     public void CleanTable()
     {
-        for(int i = 0; i < CurrentPlayer.cards[0].Count; i++)
-            CurrentPlayer.cards[0][i].gameObject.transform.position = new Vector3(8.0f, (float)i / 100, 2.0f);
-        for (int i = 0; i < OtherPlayer.cards[0].Count; i++)
-            OtherPlayer.cards[0][i].gameObject.transform.position = new Vector3(8.0f, (float)i / 100, -2.0f);
+        for(int i = 0; i < CurrentPlayer.cards[Place.Stack].Count; i++)
+            CurrentPlayer.cards[Place.Stack][i].gameObject.transform.position = new Vector3(8.0f, (float)i / 100, 2.0f);
+        for (int i = 0; i < OtherPlayer.cards[Place.Stack].Count; i++)
+            OtherPlayer.cards[Place.Stack][i].gameObject.transform.position = new Vector3(8.0f, (float)i / 100, -2.0f);
 
-        for (int i = 0; i < CurrentPlayer.cards[1].Count; i++)
-            CurrentPlayer.cards[1][i].gameObject.transform.position = new Vector3(-8.0f + 1.8f * i, 0, 3.3f);
-        for (int i = 0; i < OtherPlayer.cards[1].Count; i++)
-            OtherPlayer.cards[1][i].gameObject.transform.position = new Vector3(-8.0f + 1.8f * i, 0, -3.3f);
+        for (int i = 0; i < CurrentPlayer.cards[Place.Hand].Count; i++)
+            CurrentPlayer.cards[Place.Hand][i].gameObject.transform.position = new Vector3(-8.0f + 1.8f * i, 0, 3.3f);
+        for (int i = 0; i < OtherPlayer.cards[Place.Hand].Count; i++)
+            OtherPlayer.cards[Place.Hand][i].gameObject.transform.position = new Vector3(-8.0f + 1.8f * i, 0, -3.3f);
 
-        for (int i = 0; i < CurrentPlayer.cards[2].Count; i++)
-            CurrentPlayer.cards[2][i].gameObject.transform.position = new Vector3(-8.0f + 1.8f * i, 0, 1.2f);
-        for (int i = 0; i < OtherPlayer.cards[2].Count; i++)
-            OtherPlayer.cards[2][i].gameObject.transform.position = new Vector3(-8.0f + 1.8f * i, 0, -1.2f);
+        for (int i = 0; i < CurrentPlayer.cards[Place.Table].Count; i++)
+            CurrentPlayer.cards[Place.Table][i].gameObject.transform.position = new Vector3(-8.0f + 1.8f * i, 0, 1.2f);
+        for (int i = 0; i < OtherPlayer.cards[Place.Table].Count; i++)
+            OtherPlayer.cards[Place.Table][i].gameObject.transform.position = new Vector3(-8.0f + 1.8f * i, 0, -1.2f);
 
-        for (int i = 0; i < CurrentPlayer.cards[3].Count; i++)
-            CurrentPlayer.cards[3][i].gameObject.transform.position = new Vector3(50.0f, 0, 0);
-        for (int i = 0; i < OtherPlayer.cards[3].Count; i++)
-            OtherPlayer.cards[3][i].gameObject.transform.position = new Vector3(50.0f, 0, 0);
+        for (int i = 0; i < CurrentPlayer.cards[Place.Coffin].Count; i++)
+            CurrentPlayer.cards[Place.Coffin][i].gameObject.transform.position = new Vector3(50.0f, 0, 0);
+        for (int i = 0; i < OtherPlayer.cards[Place.Coffin].Count; i++)
+            OtherPlayer.cards[Place.Coffin][i].gameObject.transform.position = new Vector3(50.0f, 0, 0);
     }
 
     public void OnMouseDown()
@@ -74,8 +74,8 @@ public class Match : MonoBehaviour
         CurrentPlayer = OtherPlayer;
         OtherPlayer = temp;
 
-        for (int i = CurrentPlayer.cards[2].Count - 1; i >= 0; i--)
-            CurrentPlayer.cards[2][i].OnNewTurn();
+        for (int i = CurrentPlayer.cards[Place.Table].Count - 1; i >= 0; i--)
+            CurrentPlayer.cards[Place.Table][i].OnNewTurn();
 
         CheckDeaths(); //Sprawdź czy ktoś umarł/przegrał.
     }

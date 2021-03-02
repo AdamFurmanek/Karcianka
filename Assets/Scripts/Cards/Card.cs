@@ -11,15 +11,15 @@ public abstract class Card : MonoBehaviour
 
     public Match match;
     public Player player;
-    public int status;
+    public string status;
 
     public void PrepareForBattle(Match match, Player player)
     {
         ResetStats();
         this.match = match;
         this.player = player;
-        status = 0;
-        this.player.cards[0].Add(this);
+        status = Place.Stack;
+        this.player.cards[status].Add(this);
     }
 
     public void ResetStats()
@@ -37,13 +37,13 @@ public abstract class Card : MonoBehaviour
         {
             switch (status)
             {
-                case 0:
+                case "Stack":
                     DrawACard();
                     break;
-                case 1:
+                case "Hand":
                     PutOnTable();
                     break;
-                case 2:
+                case "Table":
                     match.SelectedCard = this;
                     break;
             }
@@ -59,14 +59,14 @@ public abstract class Card : MonoBehaviour
     public virtual void DrawACard()
     {
         player.cards[status].Remove(this);
-        status = 1;
+        status = Place.Hand;
         player.cards[status].Add(this);
     }
 
     public virtual void PutOnTable()
     {
         player.cards[status].Remove(this);
-        status = 2;
+        status = Place.Table;
         player.cards[status].Add(this);
     }
 
@@ -79,7 +79,7 @@ public abstract class Card : MonoBehaviour
     public virtual void Death()
     {
         player.cards[status].Remove(this);
-        status = 3;
+        status = Place.Coffin;
         player.cards[status].Add(this);
     }
 

@@ -14,8 +14,16 @@ using UnityEngine;
 //Rozdzielając to, instancjujemy tylko dwie talie kart w trakcie walki, które potem zostaną usunięte gdy wrócimy do mapy.
 public class Player
 {
-    //Karty gracza, aktualnie w formie 4 list: stos, ręka, stół, cmentarz.
-    public List<Card>[] cards = { new List<Card>(), new List<Card>(), new List<Card>(), new List<Card>()};
+    //public List<Card>[] cards = { new List<Card>(), new List<Card>(), new List<Card>(), new List<Card>()};
+
+    //Karty gracza, aktualnie: stos, ręka, stół, grób.
+    public Dictionary<string, List<Card>> cards = new Dictionary<string, List<Card>>
+    {
+        {Place.Stack, new List<Card>()},
+        {Place.Hand, new List<Card>()},
+        {Place.Table, new List<Card>()},
+        {Place.Coffin, new List<Card>()},
+    };
 
     public Player(Match match, Person person)
     {
