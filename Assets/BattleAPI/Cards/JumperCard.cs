@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Card
+﻿namespace Card
 {
     class JumperCard : Card
     {
@@ -15,7 +9,7 @@ namespace Card
 
         public override void OnOtherDraw(BaseCard card)
         {
-            if(CurrentZone == Zone.Battlefield)
+            if (CurrentZone == Zone.Battlefield)
             {
                 State.SendEvent(new MoveCardEvent(card, Zone.Hand, Zone.Battlefield));
             }

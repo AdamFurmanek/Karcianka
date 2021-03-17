@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Card
+﻿namespace Card
 {
-    class SummonerCard : Card
+    public class SummonerCard : Card
     {
         protected override float Evaluate()
         {

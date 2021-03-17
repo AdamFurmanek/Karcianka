@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Card;
 using UnityEngine;
-using Card;
 
 public class CardGameObject : MonoBehaviour
 {
@@ -9,11 +7,11 @@ public class CardGameObject : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     void Update()
     {
-        
+
     }
 }

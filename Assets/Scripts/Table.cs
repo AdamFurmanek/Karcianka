@@ -1,24 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using Assets.BattleAPI.Zones;
 using Card;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class Table : MonoBehaviour
 {
     public GameObject cardGameObjectTemplate;
     List<CardGameObject> cardsGameObjects = new List<CardGameObject>();
-    void Start()
+    public void Start()
     {
         //Na starcie Table musi przyjąć listę kart gracza i przeciwnika (lub po prostu gracza i przeciwnika).
         //Dla każdej z kart musi stworzyć CardGameObject i dodać go do swojej listy, żeby na nim operować.
 
-        BaseMatch m = new Match();
-        List<BaseCard> playerCards = new List<BaseCard>();
-        List<BaseCard> opponentCards = new List<BaseCard>();
-        Card.Card crd = new JumperCard();
-        Card.Card crd2 = new SummonerCard();
+        var m = new Match();
+        var playerCards = new List<BaseCard>();
+        var opponentCards = new List<BaseCard>();
+        var crd = new JumperCard();
+        var crd2 = new SummonerCard();
+
         playerCards.Add(crd2);
         playerCards.Add(crd);
         playerCards.Add(new SummonerCard());
@@ -29,18 +30,8 @@ public class Table : MonoBehaviour
         opponentCards.Add(new SummonerCard());
         opponentCards.Add(new SummonerCard());
 
-        foreach (var card in playerCards)
-        {
-            CardGameObject cardGO = Instantiate(cardGameObjectTemplate, cardGameObjectTemplate.transform.position, cardGameObjectTemplate.transform.rotation).GetComponent<CardGameObject>();
-            cardGO.Card = card;
-            cardsGameObjects.Add(cardGO);
-        }
-        foreach (var card in opponentCards)
-        {
-            CardGameObject cardGO = Instantiate(cardGameObjectTemplate, cardGameObjectTemplate.transform.position, cardGameObjectTemplate.transform.rotation).GetComponent<CardGameObject>();
-            cardGO.Card = card;
-            cardsGameObjects.Add(cardGO);
-        }
+        InstantiateCards(playerCards);
+        InstantiateCards(opponentCards);
 
         m.LoadDeck(PlayerIds.Player, playerCards);
         m.LoadDeck(PlayerIds.Opponent, opponentCards);
@@ -51,39 +42,46 @@ public class Table : MonoBehaviour
         m.DrawCard(PlayerIds.Player);
     }
 
-    void Update()
+    private void InstantiateCards(IEnumerable<BaseCard> cards)
+    {
+        foreach (var card in cards)
+        {
+            var cardGO = Instantiate(cardGameObjectTemplate, cardGameObjectTemplate.transform.position, cardGameObjectTemplate.transform.rotation).GetComponent<CardGameObject>();
+            cardGO.Card = card;
+            cardsGameObjects.Add(cardGO);
+        }
+    }
+
+    public void Update()
     {
         CleanTable();
     }
 
-    void CleanTable()
+    private void CleanTable()
     {
-        /*
-        foreach(var zone in Enum.GetValues(typeof(Zone)))
+        var zonesCardsCounter = new Dictionary<Zone, int>();
+        foreach (var zone in Enum.GetValues(typeof(Zone)))
         {
-            var x = cardsGameObjects.Where(c => c.Card.CurrentZone == typeof(zone))
+            var zoneCounter = cardsGameObjects.Where(c => c.Card.CurrentZone.Equals(zone)).Count();
+            zonesCardsCounter.Add((Zone)zone, zoneCounter); //todo chyba dziala
         }
-        */
 
         foreach (var cardGO in cardsGameObjects)
         {
-            BaseCard card = cardGO.Card;
+            var card = cardGO.Card;
 
-            int z = 0;
+            var z = 0;
             if (card.ControllerId == PlayerIds.Player || card.ControllerId == PlayerIds.None && card.OwnerId == PlayerIds.Player)
+            {
                 z = -1;
+            }
             else if (card.ControllerId == PlayerIds.Opponent || card.ControllerId == PlayerIds.None && card.OwnerId == PlayerIds.Opponent)
+            {
                 z = 1;
+            }
 
-            if (card.CurrentZone == Zone.Deck)
-                cardGO.gameObject.transform.position = new Vector3(8.0f, 0, 2.0f * z);
-            else if(card.CurrentZone == Zone.Hand)
-                cardGO.gameObject.transform.position = new Vector3(-8.0f, 0, 3.3f * z);
-            else if (card.CurrentZone == Zone.Battlefield)
-                cardGO.gameObject.transform.position = new Vector3(-8.0f, 0, 1.2f * z);
-            else if (card.CurrentZone == Zone.Graveyard)
-                cardGO.gameObject.transform.position = new Vector3(50.0f, 0, 0.0f * z);
-
+            var vector = ZoneHelper.GetPosition(card.CurrentZone, z);
+            cardGO.gameObject.transform.position = new Vector3(vector.X, vector.Y, vector.Z);
         }
     }
 }

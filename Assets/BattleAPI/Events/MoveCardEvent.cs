@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Card
 {
@@ -31,7 +28,7 @@ namespace Card
         protected List<BaseCard> GetZoneAsList(Player p, Zone zone)
         {
             // NB Potentially better solution is map of Zones where key is Zone enum, and value List<Card>
-            switch(zone)
+            switch (zone)
             {
                 case Zone.Battlefield:
                     return p.battlefield;

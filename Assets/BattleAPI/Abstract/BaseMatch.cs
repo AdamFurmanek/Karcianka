@@ -28,7 +28,7 @@ namespace Card
 
         public void LoadDeck(PlayerIds playerId, List<BaseCard> deck)
         {
-            foreach(BaseCard card in deck)
+            foreach (BaseCard card in deck)
             {
                 card.OwnerId = playerId;
                 card.State = this;

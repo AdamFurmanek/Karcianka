@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Card
+﻿namespace Card
 {
     public abstract class BaseCard : Entity, ITriggerObserver
     {
-        public PlayerIds OwnerId { get; set; } = PlayerIds.None ;
+        public PlayerIds OwnerId { get; set; } = PlayerIds.None;
         public PlayerIds ControllerId { get; set; } = PlayerIds.None;
         public Zone CurrentZone { get; set; }
         public int Cost { get; set; }
@@ -16,7 +10,8 @@ namespace Card
 
         private IMatch _state;
 
-        public void LcStart() {
+        public void LcStart()
+        {
             SetTriggers();
             SetStatistics();
         }

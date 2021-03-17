@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Card
 {
@@ -16,7 +12,8 @@ namespace Card
 
         public override void SignalTrigger(BaseCard card, ETrigger trigger)
         {
-            foreach(ITriggerObserver observer in GetSubscribers(trigger)) {
+            foreach (ITriggerObserver observer in GetSubscribers(trigger))
+            {
                 SendSignal(card, trigger, observer);
             }
         }
@@ -42,7 +39,7 @@ namespace Card
 
         protected void SendSignal(BaseCard card, ETrigger trigger, ITriggerObserver observer)
         {
-            switch(trigger)
+            switch (trigger)
             {
                 case ETrigger.onDraw:
                     observer.OnOtherDraw(card);
