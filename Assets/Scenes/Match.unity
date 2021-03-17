@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.4513502, g: 0.50032073, b: 0.5695196, a: 1}
+  m_IndirectSpecularColor: {r: 0.43667546, g: 0.48427135, b: 0.5645225, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -206,13 +206,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: -0.20370093, y: 0.45476663, z: -0.10767019, w: -0.8602908}
-  m_LocalPosition: {x: 27.959633, y: 16.974726, z: -19.05569}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &763882569
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 763882570}
   - component: {fileID: 763882574}
   m_Layer: 0
-  m_Name: Match
+  m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -317,11 +317,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 763882569}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce3d7611b79d64045a36858616d496a9, type: 3}
+  m_Script: {fileID: 11500000, guid: dbc29e6abf0f0d14bb7fe6f885283474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPlayer: 0
-  selectedCard: {fileID: 0}
+  cardGameObjectTemplate: {fileID: 8688270636922420701, guid: 42f1c76b535d8f441840f0a2459a4720,
+    type: 3}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
